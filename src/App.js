@@ -2,6 +2,23 @@ import React, { Component } from "react";
 // import React, { useState } from "react";
 import "./App.css";
 import Person from "./Person/Person";
+import styled from "styled-components";
+
+const StyleButton = styled.button`
+  background-color: ${(props) => (props.alt ? "red" : "green")};
+  color: white;
+  font: inherit;
+  border: 2px solid blue;
+  cursor: pointer;
+  padding: 8px;
+
+  &:hover {
+    color: black;
+    background-color: ${(props) => (props.alt ? "salmon" : "lightgreen")};
+  }
+`;
+
+/* import Radium, { StyleRoot } from "radium"; */
 // const App = (props) => {
 //   const [person, setPerson] = useState({
 //     person: [
@@ -111,13 +128,18 @@ class App extends Component {
     this.setState({ showPerson: !doesShow });
   };
   render() {
-    const style = {
-      backgroundColor: "White",
-      font: "inherit",
-      border: "2px solid blue",
-      cursor: "pointer",
-      padding: "8px",
-    };
+    // const style = {
+    //   backgroundColor: "green",
+    //   color: "white",
+    //   font: "inherit",
+    //   border: "2px solid blue",
+    //   cursor: "pointer",
+    //   padding: "8px",
+    //   /*       ":hover": {
+    //     color: "black",
+    //     backgroundColor: "lightgreen",
+    //   }, */
+    // };
 
     let person = null;
     /*     if (this.state.showPerson) {
@@ -159,15 +181,30 @@ class App extends Component {
           })}
         </div>
       );
+      // style.backgroundColor = "red";
+      /*       style[":hover"] = {
+        color: "black",
+        backgroundColor: "salmon",
+      }; */
     }
+    let classes = [];
+    if (this.state.person.length <= 2) classes.push("red");
+    if (this.state.person.length <= 1) classes.push("bold");
     return (
+      // <StyleRoot>
       <div className="App">
         <h1>Hi I'm a React App</h1>
         {/* <span style={style}>by Rahul</span> */}
-        <p>This is really working</p>
-        <button onClick={this.togglePersonHandler} style={style}>
+        <p className={classes.join(" ")}>This is really working</p>
+        {/* <button onClick={this.togglePersonHandler} style={style}>
           Toggle Person
-        </button>
+        </button> */}
+        <StyleButton
+          onClick={this.togglePersonHandler}
+          alt={this.state.showPerson}
+        >
+          Toggle Person
+        </StyleButton>
         {person}
 
         {/* {this.state.showPerson ? (
@@ -191,9 +228,11 @@ class App extends Component {
           </div>
         ) : null} */}
       </div>
+      // </StyleRoot>
     );
     // return React.createElement('div',{className: 'App'},React.createElement('h1',null,'Hi I\'m a React App ',React.createElement('span',{style:{color:"green"}},'by Rahul Sharma')));
   }
 }
 
 export default App;
+// export default Radium(App);
