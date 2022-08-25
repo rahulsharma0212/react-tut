@@ -2,7 +2,9 @@ import React, { Component } from "react";
 // import React, { useState } from "react";
 // import "./App.css";
 import classes from "./App.css"; // in react-script greater than v2 import classes from "./App.module.css";
-import Person from "./Person/Person";
+// import Person from "../components/Persons/Person/Person";
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit";
 // import styled from "styled-components";
 // import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
@@ -145,7 +147,7 @@ class App extends Component {
     // };
 
     let person = null;
-    let btnClass = [classes.Button];
+    /* let btnClass = [classes.Button]; */
     /*     if (this.state.showPerson) {
       person = (
         <div>
@@ -172,9 +174,14 @@ class App extends Component {
     if (this.state.showPerson) {
       person = (
         <div>
-          {this.state.person.map((person, index) => {
+          <Persons 
+          person={this.state.person}
+          clicked = {this.deletePersonHandler}
+          changed={this.nameChangedHandler}/>
+          {/*this.state.person.map((person, index) => {
             return (
-              /*<ErrorBoundary key={person.id}>*/
+              
+              <ErrorBoundary key={person.id}>
               <Person
                 click={() => this.deletePersonHandler(index)}
                 changed={(event) => this.nameChangedHandler(event, person.id)}
@@ -182,9 +189,9 @@ class App extends Component {
                 age={person.age}
                 key={person.id}
               />
-              /*</ErrorBoundary>*/
+              </ErrorBoundary>
             );
-          })}
+          })*/}
         </div>
       );
       // style.backgroundColor = "red";
@@ -192,34 +199,38 @@ class App extends Component {
         color: "black",
         backgroundColor: "salmon",
       }; */
-      btnClass.push(classes.Red);
+      /* btnClass.push(classes.Red); */
     }
-    let assignedClasses = [];
+    /* let assignedClasses = [];
     if (this.state.person.length <= 2) assignedClasses.push(classes.red);
-    if (this.state.person.length <= 1) assignedClasses.push(classes.bold);
+    if (this.state.person.length <= 1) assignedClasses.push(classes.bold); */
     /*    if (this.state.person.length <= 2) assignedClasses.push("red");
     if (this.state.person.length <= 1) assignedClasses.push("bold") */ return (
       // <StyleRoot>
       // <div className="App">
       <div className={classes.App}>
-        <h1>Hi I'm a React App</h1>
+       {/*  <h1>Hi I'm a React App</h1> */}
         {/* <span style={style}>by Rahul</span> */}
-        <p className={assignedClasses.join(" ")}>This is really working</p>
+        {/* <p className={assignedClasses.join(" ")}>This is really working</p> */}
         {/* <button onClick={this.togglePersonHandler} style={style}>
           Toggle Person
         </button> */}
-        <button
+        {/* <button
           onClick={this.togglePersonHandler}
           className={btnClass.join(" ")}
         >
           Toggle Person
-        </button>
+        </button> */}
         {/* <StyleButton
           onClick={this.togglePersonHandler}
           alt={this.state.showPerson.toString()}
         >
           Toggle Person
         </StyleButton> */}
+        <Cockpit 
+        showPerson ={this.state.showPerson}
+        person={this.state.person}
+        clicked={this.togglePersonHandler}/>
         {person}
 
         {/* {this.state.showPerson ? (
