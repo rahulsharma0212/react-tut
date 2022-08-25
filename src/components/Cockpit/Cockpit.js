@@ -11,7 +11,7 @@ const cockpit=(props)=>{
     if (props.person.length <= 1) assignedClasses.push(classes.bold);
 return (
     <div className={classes.cockpit}>
-        <h1>Hi I'm a React App</h1>
+        <h1>{props.title?props.title:"Hi I'm a React App"}</h1>
         <p className={assignedClasses.join(" ")}>This is really working</p>
         <button
           onClick={props.clicked}
