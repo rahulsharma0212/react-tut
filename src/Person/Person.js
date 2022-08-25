@@ -24,6 +24,11 @@ const person = (props) => {
 
   //<p>I'm a {props.name} and I am {Math.floor(Math.random()*30)}years old.</p>
 
+  /* const rnd = Math.random();
+  if(rnd>0.7){
+    throw new Error('Something went wrong');
+  } */
+
   return (
     // <StyleDiv>
     <div className={classes.Person}>
