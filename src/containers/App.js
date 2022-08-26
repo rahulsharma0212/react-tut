@@ -263,6 +263,12 @@ import Cockpit from "../components/Cockpit/Cockpit";
 
 /**Lifcycle of react */
 class App extends Component {
+  constructor(props){
+    super(props);
+    console.log('[App.js] constructor');
+    /* this.state =  */ /* you can also initiallize state here */
+  }
+
   state = {
     person: [
       { id: "sdad", name: "Max", age: 28 },
@@ -271,7 +277,33 @@ class App extends Component {
     ],
     otherState: "Some other value",
     showPerson: false,
+    showCockpit:true
   };
+
+  static getDerivedStateFromProps(props,state) {
+    console.log('[App.js] getDerivedStateFromProps', props)
+    return state;
+  }
+ /*  componentWillMount(){ //depreceated
+    console.log('[App.js] componentWillMount');
+  } */
+
+  componentDidMount(){
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps,nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    if(nextProps.person !== this.state.person ) {
+      return true;
+    }else{
+    return false;
+    }
+  }
+
+  componentDidUpdate(){
+    console.log('[App.js] componentDidUpdate');
+  }
 
   deletePersonHandler = (deleteIndex) => {
     const persons = this.state.person.slice();
@@ -295,6 +327,7 @@ class App extends Component {
     this.setState({ showPerson: !doesShow });
   };
   render() {
+    console.log('[App.js] render')
     let person = null;
 
     if (this.state.showPerson) {
@@ -310,12 +343,13 @@ class App extends Component {
     }
     return (
       <div className={classes.App}>
-        <Cockpit
+        <button onClick={()=>this.setState({showCockpit:false})}>Remove Cockpit</button>
+        {this.state.showCockpit?<Cockpit
           title={this.props.appTitle}
           showPerson={this.state.showPerson}
-          person={this.state.person}
+          personLength={this.state.person.length}
           clicked={this.togglePersonHandler}
-        />
+        />:null}
         {person}
       </div>
     );

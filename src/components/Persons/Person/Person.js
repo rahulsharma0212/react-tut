@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Component} from "react";
 /* import "./Person.css"; */
 import classes from "./Person.css";
 /* import Radium from "radium"; */
@@ -16,8 +16,9 @@ import classes from "./Person.css";
 //     width: 450px;
 //   }
 // `;
+class Person extends Component {
 
-const person = (props) => {
+
   /* const style = {
     "@media (min-width:500px)": { width: "450px" }, 
   }; */
@@ -28,18 +29,20 @@ const person = (props) => {
   if(rnd>0.7){
     throw new Error('Something went wrong');
   } */
-
+   render(){
+ console.log('[person.js] rendering...')
   return (
     // <StyleDiv>
     <div className={classes.Person}>
-      <p onClick={props.click}>
-        I'm a {props.name} and I am {props.age} years old.
+      <p onClick={this.props.click}>
+        I'm a {this.props.name} and I am {this.props.age} years old.
       </p>
-      <p>{props.children}</p>
-      <input type="text" onChange={props.changed} value={props.name}></input>
+      <p>{this.props.children}</p>
+      <input type="text" onChange={this.props.changed} value={this.props.name}></input>
     </div>
     // </StyleDiv>
   );
+  }
 };
-export default person;
+export default Person;
 // export default Radium(person);
