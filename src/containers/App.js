@@ -5,6 +5,9 @@ import classes from "./App.css"; // in react-script greater than v2 import class
 // import Person from "../components/Persons/Person/Person";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
+import withClass from "../hoc/withClass";
+import Auxillary from "../hoc/Auxilliary";
+import AuthContext from "../context/auth-context";
 // import styled from "styled-components";
 // import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
@@ -263,10 +266,12 @@ import Cockpit from "../components/Cockpit/Cockpit";
 
 /**Lifcycle of react */
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    console.log('[App.js] constructor');
-    /* this.state =  */ /* you can also initiallize state here */
+    console.log(
+      "[App.js] constructor"
+    ); /* you can also initiallize state here */
+    /* this.state =  */
   }
 
   state = {
@@ -277,32 +282,30 @@ class App extends Component {
     ],
     otherState: "Some other value",
     showPerson: false,
-    showCockpit:true
+    showCockpit: true,
+    changedCounter: 0,
+    authenticated: false,
   };
 
-  static getDerivedStateFromProps(props,state) {
-    console.log('[App.js] getDerivedStateFromProps', props)
+  static getDerivedStateFromProps(props, state) {
+    console.log("[App.js] getDerivedStateFromProps", props);
     return state;
   }
- /*  componentWillMount(){ //depreceated
+  /*  componentWillMount(){ //depreceated
     console.log('[App.js] componentWillMount');
   } */
 
-  componentDidMount(){
-    console.log('[App.js] componentDidMount');
+  componentDidMount() {
+    console.log("[App.js] componentDidMount");
   }
 
-  shouldComponentUpdate(nextProps,nextState) {
-    console.log('[App.js] shouldComponentUpdate');
-    if(nextProps.person !== this.state.person ) {
-      return true;
-    }else{
-    return false;
-    }
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("[App.js] shouldComponentUpdate");
+    return true;
   }
 
-  componentDidUpdate(){
-    console.log('[App.js] componentDidUpdate');
+  componentDidUpdate() {
+    console.log("[App.js] componentDidUpdate");
   }
 
   deletePersonHandler = (deleteIndex) => {
@@ -318,16 +321,24 @@ class App extends Component {
     person.name = event.target.value;
     const persons = [...this.state.person];
     persons[personIndex] = person;
-    this.setState({
-      person: persons,
+    this.setState((prevState, props) => {
+      return {
+        person: persons,
+        changedCounter: prevState.changedCounter + 1,
+      };
     });
   };
   togglePersonHandler = () => {
     const doesShow = this.state.showPerson;
     this.setState({ showPerson: !doesShow });
   };
+  authHandler = () => {
+    this.setState({
+      authenticated: true,
+    });
+  };
   render() {
-    console.log('[App.js] render')
+    console.log("[App.js] render");
     let person = null;
 
     if (this.state.showPerson) {
@@ -337,24 +348,42 @@ class App extends Component {
             person={this.state.person}
             clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler}
+            // isAuthenticated={this.state.authenticated}
           />
         </div>
       );
     }
     return (
-      <div className={classes.App}>
-        <button onClick={()=>this.setState({showCockpit:false})}>Remove Cockpit</button>
-        {this.state.showCockpit?<Cockpit
-          title={this.props.appTitle}
-          showPerson={this.state.showPerson}
-          personLength={this.state.person.length}
-          clicked={this.togglePersonHandler}
-        />:null}
-        {person}
-      </div>
+      // <div className={classes.App}>
+      // <WithClass classes={classes.App}>
+      <Auxillary>
+        <button onClick={() => this.setState({ showCockpit: false })}>
+          Remove Cockpit
+        </button>
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.authHandler,
+          }}
+        >
+          {this.state.showCockpit ? (
+            <Cockpit
+              title={this.props.appTitle}
+              showPerson={this.state.showPerson}
+              personLength={this.state.person.length}
+              clicked={this.togglePersonHandler}
+              // login={this.authHandler}
+            />
+          ) : null}
+          {person}
+        </AuthContext.Provider>
+      </Auxillary>
+      // </WithClass>
+      //  </div>
     );
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
+// export default App;
 // export default Radium(App);
